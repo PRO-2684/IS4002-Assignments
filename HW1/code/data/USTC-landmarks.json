@@ -1,0 +1,16 @@
+[
+    {"landmark": "Library of West Campus", "geo": "31.84128,117.25201"},
+    {"landmark": "Library of East Campus", "geo": "31.83904,117.26387"},
+    {"landmark": "1st Teaching Building", "geo": "31.84102,117.26366"},
+    {"landmark": "2st Teaching Building", "geo": "31.83997,117.26516"},
+    {"landmark": "3st Teaching Building", "geo": "31.84021,117.24956"},
+    {"landmark": "5st Teaching Building", "geo": "31.84294,117.26586"},
+    {"landmark": "Kindergarten", "geo":"31.84065,117.26703"},
+    {"landmark": "Hospital", "geo":"31.83541,117.26062"},
+    {"landmark": "Gym", "amenity": "sports", "geo":"31.83988,117.25769"},
+    {"landmark": "Stadium of West Campus", "amenity": "sports", "geo":"31.84129,117.24704"},
+    {"landmark": "Stadium of East Campus", "amenity": "sports", "geo":"31.83849,117.26146"},
+    {"landmark": "Canteen of East Campus", "amenity": "food", "geo":"31.83910,117.26536"},
+    {"landmark": "Canteen of West Campus", "amenity": "food", "geo":"31.84271,117.24843"},
+    {"landmark": "Canteen of Graduates", "amenity": "food", "geo":"31.83917,117.25338"}
+]
