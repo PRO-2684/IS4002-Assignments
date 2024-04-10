@@ -79,7 +79,10 @@ class Gobang(UtilGobang):
         """
 
         # BEGIN_YOUR_CODE (our solution is 3 line of code, but don't worry if you deviate from this)
-
+        next_state = copy.deepcopy(self.board)
+        if action is not None:
+            black, x, y = action
+            next_state[x][y] = black
         # END_YOUR_CODE
 
         if noise is not None:
@@ -95,7 +98,8 @@ class Gobang(UtilGobang):
         """
         if self.action_space:
             # BEGIN_YOUR_CODE (our solution is 2 line of code, but don't worry if you deviate from this)
-
+            x, y = random.choice(self.action_space)
+            self.action_space.remove((x, y))
             # END_YOUR_CODE
             return 2, x, y
         else:
@@ -115,7 +119,10 @@ class Gobang(UtilGobang):
         """
 
         # BEGIN_YOUR_CODE (our solution is 4 line of code, but don't worry if you deviate from this)
-
+        black_1, white_1 = self.count_max_connections(self.board)
+        next_state = self.get_next_state(action, noise)
+        black_2, white_2 = self.count_max_connections(next_state)
+        reward = (black_2 ** 2 - white_2 ** 2) - (black_1 ** 2 - white_1 ** 2)
         # END_YOUR_CODE
 
         return black_1, white_1, black_2, white_2, reward
@@ -150,7 +157,14 @@ class Gobang(UtilGobang):
         """
 
         # BEGIN_YOUR_CODE (our solution is 8 line of code, but don't worry if you deviate from this)
-
+        choose_randomly = random.random() < eps
+        random_action = (1,) + random.choice(self.action_space)
+        if choose_randomly or len(self.Q) == 0:
+            action = random_action
+        else:
+            s = self.array_to_hashable(self.board)
+            action = max(self.Q[s], key=self.Q[s].get, default=random_action) # default to random action if no action in Q
+        self.action_space.remove(action[1:])
         # END_YOUR_CODE
         return action, self.sample_noise()
 
@@ -174,5 +188,14 @@ class Gobang(UtilGobang):
         alpha = alpha_0 / self.s_a_visited[(s0, action)]
 
         # BEGIN_YOUR_CODE (our solution is 18 line of code, but don't worry if you deviate from this)
+        if s0 not in self.Q: # initialize Q[s0] if not exist
+            self.Q[s0] = {}
+        q = self.Q[s0].get(action, 0) # default to 0 if action not in Q[s0]
+        if s1 not in self.Q:
+            self.Q[s1] = {}
+        max_q = max(self.Q[s1].values()) if self.Q[s1] else 0 # default to 0 if Q[s1] is empty
+        q = alpha * (reward + self.gamma * max_q) + (1 - alpha) * q # new Q value
+        self.Q[s0][action] = q # update Q[s0][action]
 
+        return
         # END_YOUR_CODE
