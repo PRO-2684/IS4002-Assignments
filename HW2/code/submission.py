@@ -163,6 +163,8 @@ class Gobang(UtilGobang):
             action = random_action
         else:
             s = self.array_to_hashable(self.board)
+            if s not in self.Q:
+                self.Q[s] = {}
             action = max(self.Q[s], key=self.Q[s].get, default=random_action) # default to random action if no action in Q
         self.action_space.remove(action[1:])
         # END_YOUR_CODE
