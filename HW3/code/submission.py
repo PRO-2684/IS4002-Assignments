@@ -1,9 +1,10 @@
-'''
+"""
 Licensing Information: Please do not distribute or publish solutions to this
 project. You are free to use and extend Driverless Car for educational
 purposes. The Driverless Car project was developed at Stanford, primarily by
 Chris Piech (piech@cs.stanford.edu). It was inspired by the Pacman projects.
-'''
+"""
+
 import collections
 import math
 import random
@@ -23,7 +24,9 @@ class ExactInference:
     # Constructor that initializes an ExactInference object which has
     # numRows x numCols number of tiles.
     def __init__(self, numRows: int, numCols: int):
-        self.skipElapse = False  ### ONLY USED BY GRADER.PY in case problem 2 has not been completed
+        self.skipElapse = (
+            False  ### ONLY USED BY GRADER.PY in case problem 2 has not been completed
+        )
         # util.Belief is a class (constructor) that represents the belief for a single
         # inference state of a single car (see util.py).
         self.belief = util.Belief(numRows, numCols)
@@ -52,7 +55,14 @@ class ExactInference:
 
     def observe(self, agentX: int, agentY: int, observedDist: float) -> None:
         # BEGIN_YOUR_CODE (our solution is 7 lines of code, but don't worry if you deviate from this)
-        raise Exception("Not implemented yet")
+        for row in range(self.belief.getNumRows()):
+            for col in range(self.belief.getNumCols()):
+                x, y = util.colToX(col), util.rowToY(row)
+                distance = math.dist((x, y), (agentX, agentY))
+                density = util.pdf(distance, Const.SONAR_STD, observedDist)
+                previousProb = self.belief.getProb(row, col)
+                self.belief.setProb(row, col, previousProb * density)
+        self.belief.normalize()
         # END_YOUR_CODE
 
     ##################################################################################
@@ -76,10 +86,17 @@ class ExactInference:
     #    small floating point numbers can lead to sum being close to but not equal to 1)
     ##################################################################################
     def elapseTime(self) -> None:
-        if self.skipElapse: ### ONLY FOR THE GRADER TO USE IN Problem 1
+        if self.skipElapse:  ### ONLY FOR THE GRADER TO USE IN Problem 1
             return
         # BEGIN_YOUR_CODE (our solution is 7 lines of code, but don't worry if you deviate from this)
-        raise Exception("Not implemented yet")
+        belief = util.Belief(self.belief.getNumRows(), self.belief.getNumCols(), 0)
+        for oldTile, newTile in self.transProb:
+            prob = self.transProb[(oldTile, newTile)] # Transition probability from oldTile to newTile
+            if prob > 0:
+                prevProb = self.belief.getProb(*oldTile) # Previous probability of oldTile
+                belief.addProb(*newTile, prevProb * prob)
+        self.belief = belief
+        self.belief.normalize()
         # END_YOUR_CODE
 
     # Function: Get Belief
@@ -109,7 +126,7 @@ class ParticleFilter:
         # from oldTile to newTile.
         self.transProb = util.loadTransProb()
         self.transProbDict = dict()
-        for (oldTile, newTile) in self.transProb:
+        for oldTile, newTile in self.transProb:
             if oldTile not in self.transProbDict:
                 self.transProbDict[oldTile] = collections.defaultdict(int)
             self.transProbDict[oldTile][newTile] = self.transProb[(oldTile, newTile)]
@@ -244,8 +261,6 @@ class ParticleFilter:
                 newParticles[newParticle] += 1
         self.particles = newParticles
         # END_SOLUTION
-
-
 
     # Function: Get Belief
     # ---------------------
