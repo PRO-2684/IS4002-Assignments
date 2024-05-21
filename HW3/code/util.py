@@ -140,13 +140,15 @@ class Belief(object):
     # numRows by numCols. As an optional third argument you can pass in a the
     # initial belief value for every tile (ie Belief(3, 4, 0.0) would create
     # a belief grid with dimensions (3, 4) where each tile has belief = 0.0.
-    def __init__(self, numRows: int, numCols: int, value: float=None):
+    def __init__(self, numRows: int, numCols: int, value: float = None):
         self.numRows: int = numRows
         self.numCols: int = numCols
         numElems = numRows * numCols
         if value == None:
             value = 1.0 / numElems
-        self.grid: list[list[float]] = [[value for _ in range(numCols)] for _ in range(numRows)]
+        self.grid: list[list[float]] = [
+            [value for _ in range(numCols)] for _ in range(numRows)
+        ]
 
     # Function: Set Prob
     # ------------------

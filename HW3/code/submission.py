@@ -91,9 +91,11 @@ class ExactInference:
         # BEGIN_YOUR_CODE (our solution is 7 lines of code, but don't worry if you deviate from this)
         belief = util.Belief(self.belief.getNumRows(), self.belief.getNumCols(), 0)
         for oldTile, newTile in self.transProb:
-            prob = self.transProb[(oldTile, newTile)] # Transition probability from oldTile to newTile
+            # Transition probability from oldTile to newTile
+            prob = self.transProb[(oldTile, newTile)]
             if prob > 0:
-                prevProb = self.belief.getProb(*oldTile) # Previous probability of oldTile
+                # Previous probability of oldTile
+                prevProb = self.belief.getProb(*oldTile)
                 belief.addProb(*newTile, prevProb * prob)
         self.belief = belief
         self.belief.normalize()

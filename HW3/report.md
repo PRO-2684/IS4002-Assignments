@@ -2,7 +2,6 @@
 
 %% [Reference 1](https://github.com/rohitapte/cs221/blob/master/car) %%
 %% [Reference 2](https://github.com/erickmiller/AutomatousSourceCode/) %%
-%% Cloned on vlab-main %%
 
 ## 问题 1：概率推断
 
@@ -105,12 +104,32 @@ $$
 ### d
 
 ```python
-
+def elapseTime(self) -> None:
+    if self.skipElapse:  ### ONLY FOR THE GRADER TO USE IN Problem 1
+        return
+    # BEGIN_YOUR_CODE (our solution is 7 lines of code, but don't worry if you deviate from this)
+    belief = util.Belief(self.belief.getNumRows(), self.belief.getNumCols(), 0)
+    for oldTile, newTile in self.transProb:
+        # Transition probability from oldTile to newTile
+        prob = self.transProb[(oldTile, newTile)]
+        if prob > 0:
+            # Previous probability of oldTile
+            prevProb = self.belief.getProb(*oldTile)
+            belief.addProb(*newTile, prevProb * prob)
+    self.belief = belief
+    self.belief.normalize()
+    # END_YOUR_CODE
 ```
 
-## 3
+## 问题 3：是哪辆车？
 
+### a
 
+### b
+
+### c
+
+### d
 
 ## 4
 
