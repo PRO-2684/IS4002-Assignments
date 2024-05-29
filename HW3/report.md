@@ -169,6 +169,21 @@ def elapseTime(self) -> None:
     self.belief = belief
     self.belief.normalize()
     # END_YOUR_CODE
+def elapseTime(self) -> None:
+    if self.skipElapse:  ### ONLY FOR THE GRADER TO USE IN Problem 1
+        return
+    # BEGIN_YOUR_CODE (our solution is 7 lines of code, but don't worry if you deviate from this)
+    belief = util.Belief(self.belief.getNumRows(), self.belief.getNumCols(), 0)
+    for oldTile, newTile in self.transProb:
+        # Transition probability from oldTile to newTile
+        prob = self.transProb[(oldTile, newTile)]
+        if prob > 0:
+            # Previous probability of oldTile
+            prevProb = self.belief.getProb(*oldTile)
+            belief.addProb(*newTile, prevProb * prob)
+    self.belief = belief
+    self.belief.normalize()
+    # END_YOUR_CODE
 ```
 
 ## 问题 3：是哪辆车？
@@ -349,7 +364,7 @@ $$
 
 ## 问题 4：模型学习
 
-%% 
+%%
 EM 算法的基本思想是，我们首先初始化参数，然后交替地进行两个步骤：E 步骤和 M 步骤。在 E 步骤中，我们计算隐变量的后验分布，即给定观测数据和当前参数，隐变量的分布。在 M 步骤中，我们更新参数，以最大化对数似然。具体算法见下：
 
 **Algorithm 1 EM 算法**
