@@ -22,4 +22,4 @@ def get_opponent():
     # END YOUR CODE
 
 
-__all__ = ['get_opponent']
+__all__ = ["get_opponent"]

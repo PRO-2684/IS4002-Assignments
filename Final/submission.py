@@ -6,9 +6,9 @@ from typing import *
 import sys
 import argparse
 
-parser = argparse.ArgumentParser(description='args')
-parser.add_argument('--num_episodes', type=int, help='number of episodes')
-parser.add_argument('--checkpoint', type=int, help='the interval of saving models')
+parser = argparse.ArgumentParser(description="args")
+parser.add_argument("--num_episodes", type=int, help="number of episodes")
+parser.add_argument("--checkpoint", type=int, help="the interval of saving models")
 args = parser.parse_args()
 num_episodes = args.num_episodes
 checkpoint = args.checkpoint
@@ -67,7 +67,9 @@ class Actor(nn.Module):
 
     def forward(self, x: np.ndarray):
         if len(x.shape) == 2:
-            output = torch.tensor(x).to(device).to(torch.float32).unsqueeze(0).unsqueeze(0)
+            output = (
+                torch.tensor(x).to(device).to(torch.float32).unsqueeze(0).unsqueeze(0)
+            )
         else:
             output = torch.tensor(x).to(device).to(torch.float32)
 
@@ -135,9 +137,13 @@ class Critic(nn.Module):
         self.optimizer = torch.optim.Adam(params=self.parameters(), lr=lr)
 
     def forward(self, x: np.ndarray, action: np.ndarray):
-        indices = torch.tensor([_position_to_index(self.board_size, x, y) for x, y in action]).to(device)
+        indices = torch.tensor(
+            [_position_to_index(self.board_size, x, y) for x, y in action]
+        ).to(device)
         if len(x.shape) == 2:
-            output = torch.tensor(x).to(device).to(torch.float32).unsqueeze(0).unsqueeze(0)
+            output = (
+                torch.tensor(x).to(device).to(torch.float32).unsqueeze(0).unsqueeze(0)
+            )
         else:
             output = torch.tensor(x).to(device).to(torch.float32)
 
@@ -192,7 +198,9 @@ class GobangModel(nn.Module):
 
         targets = rewards + gamma * next_qs
         critic_loss = nn.MSELoss()(targets, qs)
-        indices = torch.tensor([_position_to_index(self.board_size, x, y) for x, y in actions]).to(device)
+        indices = torch.tensor(
+            [_position_to_index(self.board_size, x, y) for x, y in actions]
+        ).to(device)
         aimed_policy = policy[torch.arange(len(indices)), indices]
         actor_loss = -torch.mean(torch.log(aimed_policy + eps) * qs.clone().detach())
 

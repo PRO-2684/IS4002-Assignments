@@ -20,4 +20,4 @@ def get_model():
     raise NotImplementedError("Not implemented!")
 
 
-__all__ = ['get_model']
+__all__ = ["get_model"]

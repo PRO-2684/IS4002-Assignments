@@ -22,4 +22,6 @@ if __name__ == "__main__":
     # or testing with another trained model (by setting random_response=False).
     # Make sure that both the model (which represents black pieces) and opponent (which represents white pieces) are
     # loaded before the evaluation process.
-    chess_board.evaluate_agent_performance(random_response=False, model=model, opponent=opponent, episodes=num_episodes)
+    chess_board.evaluate_agent_performance(
+        random_response=False, model=model, opponent=opponent, episodes=num_episodes
+    )
